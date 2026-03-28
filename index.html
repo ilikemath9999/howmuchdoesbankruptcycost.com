@@ -371,6 +371,110 @@ a:focus-visible,button:focus-visible{outline:2px solid #60a5fa;outline-offset:2p
   </div>
 </div>
 
+<div class="section" id="estimator">
+  <h2>Estimate Your Bankruptcy Cost</h2>
+  <p>Use this calculator to get a rough estimate of what filing bankruptcy may cost in your situation. These are national averages -- your actual costs may vary.</p>
+
+  <div style="background:#111;border:1px solid #333;border-radius:12px;padding:28px;margin:24px 0">
+    <div style="margin-bottom:20px">
+      <label style="display:block;color:#fff;font-weight:600;font-size:15px;margin-bottom:10px">Which chapter?</label>
+      <div style="display:flex;gap:16px">
+        <label style="display:flex;align-items:center;gap:8px;color:#ccc;font-size:15px;cursor:pointer">
+          <input type="radio" name="est-chapter" value="7" checked onchange="updateEstimate()" style="accent-color:#3fb950;width:18px;height:18px"> Chapter 7
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;color:#ccc;font-size:15px;cursor:pointer">
+          <input type="radio" name="est-chapter" value="13" onchange="updateEstimate()" style="accent-color:#f0883e;width:18px;height:18px"> Chapter 13
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <label for="est-region" style="display:block;color:#fff;font-weight:600;font-size:15px;margin-bottom:10px">Region / cost of living</label>
+      <select id="est-region" onchange="updateEstimate()" style="width:100%;max-width:360px;padding:10px 12px;background:#222;border:1px solid #444;border-radius:6px;color:#e5e5e5;font-size:15px;min-height:44px">
+        <option value="low">Rural / low cost of living</option>
+        <option value="mid" selected>Mid-size metro</option>
+        <option value="high">Major metro (NYC, LA, Chicago, etc.)</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <label style="display:block;color:#fff;font-weight:600;font-size:15px;margin-bottom:10px">Do you qualify for a fee waiver? (Income below 150% of poverty guidelines)</label>
+      <div style="display:flex;gap:16px">
+        <label style="display:flex;align-items:center;gap:8px;color:#ccc;font-size:15px;cursor:pointer">
+          <input type="radio" name="est-waiver" value="no" checked onchange="updateEstimate()" style="accent-color:#60a5fa;width:18px;height:18px"> No
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;color:#ccc;font-size:15px;cursor:pointer">
+          <input type="radio" name="est-waiver" value="yes" onchange="updateEstimate()" style="accent-color:#60a5fa;width:18px;height:18px"> Yes
+        </label>
+      </div>
+    </div>
+
+    <div style="border-top:2px solid #333;padding-top:20px">
+      <h3 style="color:#fff;font-size:18px;margin-bottom:16px" id="est-title">Estimated Costs -- Chapter 7</h3>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:14px">
+        <span style="color:#ccc">Court filing fee</span>
+        <span style="color:#fff;font-weight:600" id="est-filing">$338</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:14px">
+        <span style="color:#ccc">Attorney fees (estimated range)</span>
+        <span style="color:#fff;font-weight:600" id="est-attorney">$1,000 - $1,800</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:14px">
+        <span style="color:#ccc">Pre-filing credit counseling</span>
+        <span style="color:#fff;font-weight:600">$15 - $50</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:14px">
+        <span style="color:#ccc">Post-filing debtor education</span>
+        <span style="color:#fff;font-weight:600">$15 - $50</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:16px 0 0;border-top:2px solid #333;margin-top:8px;font-size:16px;font-weight:700">
+        <span style="color:#fff">Estimated Total Range</span>
+        <span id="est-total" style="color:#3fb950">$1,368 - $2,238</span>
+      </div>
+      <p id="est-note" style="color:#888;font-size:13px;margin-top:12px;margin-bottom:0">Chapter 7 attorney fees are paid upfront before filing. The filing fee can be paid in installments.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateEstimate(){
+  var ch=document.querySelector('input[name="est-chapter"]:checked').value;
+  var region=document.getElementById('est-region').value;
+  var waiver=document.querySelector('input[name="est-waiver"]:checked').value;
+
+  var filingFee=ch==='7'?338:313;
+  if(waiver==='yes'&&ch==='7')filingFee=0;
+
+  var attLow,attHigh;
+  if(ch==='7'){
+    if(region==='low'){attLow=750;attHigh=1200;}
+    else if(region==='mid'){attLow=1000;attHigh=1800;}
+    else{attLow=1500;attHigh=2500;}
+  }else{
+    if(region==='low'){attLow=2500;attHigh=3500;}
+    else if(region==='mid'){attLow=3000;attHigh=4500;}
+    else{attLow=3500;attHigh=6000;}
+  }
+
+  var counselLow=15+15;
+  var counselHigh=50+50;
+  var totalLow=filingFee+attLow+counselLow;
+  var totalHigh=filingFee+attHigh+counselHigh;
+
+  document.getElementById('est-title').textContent='Estimated Costs -- Chapter '+ch;
+  document.getElementById('est-filing').textContent=filingFee===0?'$0 (waived)':'$'+filingFee;
+  document.getElementById('est-attorney').textContent='$'+attLow.toLocaleString()+' - $'+attHigh.toLocaleString();
+  document.getElementById('est-total').textContent='$'+totalLow.toLocaleString()+' - $'+totalHigh.toLocaleString();
+  document.getElementById('est-total').style.color=ch==='7'?'#3fb950':'#f0883e';
+
+  if(ch==='7'){
+    document.getElementById('est-note').textContent='Chapter 7 attorney fees are paid upfront before filing.'+(waiver==='yes'?' Filing fee waived for qualifying low-income filers (Form 103B).':' The filing fee can be paid in installments.');
+  }else{
+    document.getElementById('est-note').textContent='Chapter 13 attorney fees are typically paid through the 3-5 year repayment plan.'+(waiver==='yes'?' Note: Chapter 13 filing fees cannot be waived, only paid in installments.':' The filing fee can be paid in installments.');
+  }
+}
+</script>
+
 <div class="section">
   <h2>About This Data</h2>
   <p>Fee ranges on this page are based on surveys of bankruptcy attorney fees across multiple federal districts, published fee guidelines, and data from the <a href="https://www.fjc.gov/research/idb" target="_blank" rel="noopener">FJC Integrated Database</a>. Discharge rates are derived from national case outcome data covering 4.9 million cases across all 94 federal districts.</p>
