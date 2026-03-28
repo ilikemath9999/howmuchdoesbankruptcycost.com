@@ -189,13 +189,16 @@ a:focus-visible,button:focus-visible{outline:2px solid #60a5fa;outline-offset:2p
 
 <nav class="nav" role="navigation" aria-label="Site navigation">
   <a href="/" class="brand">howmuchdoesbankruptcycost.com</a>
-  <button class="hamburger" aria-label="Toggle navigation menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+  <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" onclick="var n=this.nextElementSibling;var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open);">&#9776;</button>
   <div class="nav-links">
-    <a href="/" class="active">Costs</a>
-    <a href="https://chapter7vs13.org">Ch.7 vs Ch.13</a>
-    <a href="https://meanstest.org">Means Test</a>
-    <a href="https://1328f.com">Discharge Screener</a>
-    <a href="https://1328f.org">Research</a>
+    <a href="/" class="active">Home</a>
+    <a href="/filing-fees.html">Filing Fees</a>
+    <a href="/attorney-fees.html">Attorney Fees</a>
+    <a href="/fee-waivers.html">Fee Waivers</a>
+    <a href="/chapter-7-cost.html">Ch.7 Cost</a>
+    <a href="/chapter-13-cost.html">Ch.13 Cost</a>
+    <a href="/hidden-costs.html">Hidden Costs</a>
+    <a href="/free-options.html">Free Options</a>
   </div>
 </nav>
 
