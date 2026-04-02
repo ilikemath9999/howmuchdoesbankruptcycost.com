@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://howmuchdoesbankruptcycost.com/sitemap.xml
+
+Sitemap: https://howmuchdoesbankruptcycost.com/sitemapindex.xml
