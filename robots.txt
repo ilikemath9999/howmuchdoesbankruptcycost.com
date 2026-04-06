@@ -3,3 +3,4 @@ Allow: /
 
 
 Sitemap: https://howmuchdoesbankruptcycost.com/sitemapindex.xml
+Sitemap: https://howmuchdoesbankruptcycost.com/sitemap.xml
